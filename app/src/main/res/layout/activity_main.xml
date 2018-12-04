@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_icon"
+    tools:context=".view.activity.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/main_FL"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/main_LL"
+        app:layout_constraintEnd_toEndOf="@+id/main_LL"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/main_LL"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginBottom="2dp"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_shap"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_FL">
+
+        <com.github.snowdream.android.widget.SmartImageView
+            android:id="@+id/main_SIV_msg"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            android:contentDescription="TODO"
+            android:src="@mipmap/msg" />
+
+        <com.github.snowdream.android.widget.SmartImageView
+            android:id="@+id/main_SIV_contact"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            android:contentDescription="TODO"
+            android:src="@mipmap/contact" />
+
+        <com.github.snowdream.android.widget.SmartImageView
+            android:id="@+id/main_SIV_mine"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            android:contentDescription="TODO"
+            android:src="@mipmap/mine" />
+
+        <!--<com.github.snowdream.android.widget.SmartImageView-->
+            <!--android:id="@+id/main_SIV_setting"-->
+            <!--android:layout_width="45dp"-->
+            <!--android:layout_height="45dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_margin="2dp"-->
+            <!--android:contentDescription="TODO"-->
+            <!--android:src="@mipmap/setting_icon" />-->
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

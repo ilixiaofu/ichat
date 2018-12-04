@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentRight="true">
+
+    <TextView
+        android:id="@+id/chat_A_datetime"
+        android:layout_width="1000dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:singleLine="true"
+        android:text="2018-10-20 10:10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.lxf.ichat.view.base.BaseCircleImageView
+        android:id="@+id/chat_A_head"
+        android:layout_width="63dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@mipmap/ichat_logo_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chat_A_datetime"
+        app:layout_constraintVertical_bias="0.0"
+        tools:outCircleColor="#ef2838"
+        tools:outCircleWidth="2dp" />
+
+    <TextView
+        android:id="@+id/chat_A_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="布吉岛:"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/chat_A_head"
+        app:layout_constraintEnd_toStartOf="@+id/chat_A_head"
+        app:layout_constraintTop_toTopOf="@+id/chat_A_head"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/chat_A_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/a_shap"
+        android:gravity="left"
+        android:maxEms="11"
+        android:padding="3dp"
+        android:textIsSelectable="true"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/chat_A_head"
+        app:layout_constraintTop_toBottomOf="@+id/chat_A_nickname" />
+
+
+
+</android.support.constraint.ConstraintLayout>

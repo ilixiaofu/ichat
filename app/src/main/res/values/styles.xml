@@ -1,0 +1,43 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="NoTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
+
+    <style name="AppFontSize_30">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="AppFontSize_25">
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="AppFontSize_22">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="AppFontSize_20">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="AppFontSize_18">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CustomDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+</resources>

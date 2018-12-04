@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BaseCircleImageView">
+        <attr name="outCircleColor"></attr>
+        <attr name="outCircleWidth"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="CostomTextView">
+        <attr name="text" format="string"></attr>
+        <attr name="text_color" format="integer"></attr>
+        <attr name="text_size" format="dimension"></attr>
+    </declare-styleable>
+</resources>

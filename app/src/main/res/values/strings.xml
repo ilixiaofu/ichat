@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">ichat</string>
+    <string name="ichat_login_number">QQ号/手机号/邮箱</string>
+    <string name="ichat_login_password">密码</string>
+    <string name="ichat_login_logintx">登 录</string>
+    <string name="ichat_login_forget_password">忘记密码？</string>
+    <string name="ichat_login_new_user">新用户注册</string>
+
+    <string name="ichat_new_user_register">新用户注册</string>
+    <string name="ichat_register">注 册</string>
+    <string-array name="ichat_user_profile_key">
+        <item>账号</item>
+        <item>昵称</item>
+        <item>个性签名</item>
+        <item>性别</item>
+        <item>生日</item>
+        <item>地区</item>
+        <item>故乡</item>
+        <item>邮箱</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

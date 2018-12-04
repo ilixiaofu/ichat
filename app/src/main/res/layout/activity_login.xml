@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/default_logo"
+    tools:context=".view.activity.LoginActivity">
+
+    <com.lxf.ichat.view.base.BaseCircleImageView
+        android:id="@+id/login_IV_logo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@mipmap/ichat_logo_icon"
+        tools:outCircleColor="#f53fe9"
+        tools:outCircleWidth="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <EditText
+        android:id="@+id/login_ET_UID"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginTop="8dp"
+        android:hint="@string/ichat_login_number"
+        android:inputType="text"
+        android:maxLength="20"
+        android:singleLine="true"
+        android:ellipsize="end"
+        style="@style/AppFontSize_25"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_IV_logo" />
+
+    <EditText
+        android:id="@+id/login_ET_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:inputType="textPassword"
+        android:maxLength="20"
+        android:singleLine="true"
+        android:ellipsize="end"
+        style="@style/AppFontSize_25"
+        android:hint="@string/ichat_login_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_ET_UID" />
+
+    <Button
+        android:id="@+id/login_BTN_login"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="#28ade1"
+        android:text="登 录"
+        style="@style/AppFontSize_25"
+        android:textColor="#fdfdfe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_ET_password" />
+
+    <CheckBox
+        android:id="@+id/login_CB_keep_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="记住密码"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="@+id/login_BTN_login"
+        app:layout_constraintTop_toBottomOf="@+id/login_BTN_login" />
+
+    <CheckBox
+        android:id="@+id/login_CB_auto_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="自动登录"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="@+id/login_BTN_login"
+        app:layout_constraintTop_toBottomOf="@+id/login_BTN_login" />
+
+    <TextView
+        android:id="@+id/login_TV_FPWD"
+        style="@style/AppFontSize_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/ichat_login_forget_password"
+        android:textColor="#28ade1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/login_BTN_login" />
+
+    <TextView
+        android:id="@+id/login_TV_new_user"
+        style="@style/AppFontSize_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/ichat_login_new_user"
+        android:textColor="#28ade1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/login_BTN_login" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activity.UserSettingActivity">
+
+    <LinearLayout
+        android:id="@+id/activity_user_setting_LL"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="#27ace0"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/activity_user_setting_TV_back"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textSize="25sp"
+            android:text="返回" />
+
+        <TextView
+            android:id="@+id/activity_user_setting_TV_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:paddingRight="90dp"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textSize="25sp"
+            android:text="设置" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/activity_user_setting_LV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_user_setting_LL">
+
+    </ListView>
+
+</android.support.constraint.ConstraintLayout>

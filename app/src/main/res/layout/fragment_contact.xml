@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragment.ContactFragment">
+
+
+    <LinearLayout
+        android:id="@+id/fragment_contract_LL"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:background="#27ace0"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.lxf.ichat.view.base.BaseCircleImageView
+            android:id="@+id/fragment_contract__CIV_head"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0"
+            android:src="@mipmap/ichat_logo_icon"
+            tools:outCircleColor="#efd7e5"
+            tools:outCircleWidth="2dp" />
+
+        <TextView
+            android:id="@+id/fragment_contract_TV_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="联系人"
+            android:textSize="30sp"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/fragment_contract_TV_add_contact"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:background="#27ace0"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="45sp"
+            android:text="+" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/fragment_contract_LV"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_contract_LL" />
+
+
+</android.support.constraint.ConstraintLayout>
