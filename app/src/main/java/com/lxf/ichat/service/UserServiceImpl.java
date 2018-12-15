@@ -5,11 +5,10 @@ import android.util.Log;
 import com.alibaba.fastjson.JSONObject;
 import com.lxf.ichat.constant.URLConstant;
 import com.lxf.ichat.exception.ParameterErrorException;
-import com.lxf.ichat.httpclient.HttpResponseCallback;
-import com.lxf.ichat.httpclient.IchatOkHttpClient;
 import com.lxf.ichat.po.ChangePasswordPO;
 import com.lxf.ichat.po.MessagePO;
 import com.lxf.ichat.po.UserPO;
+import com.lxf.ichat.util.OKHttpUtil;
 import com.lxf.ichat.view.viewholder.LoginActivityViewHolder;
 import com.lxf.ichat.view.viewholder.RegisterActivityViewHolder;
 
@@ -20,14 +19,8 @@ public class UserServiceImpl implements UserService {
 
     private static final String TAG = UserServiceImpl.class.getName();
 
-    private IchatOkHttpClient ichatOkHttpClient;
-
-    public UserServiceImpl() {
-        ichatOkHttpClient = IchatOkHttpClient.getInstance();
-    }
-
     @Override
-    public void register(RegisterActivityViewHolder mViewHolder, HttpResponseCallback responseCallback) {
+    public void register(RegisterActivityViewHolder mViewHolder, OKHttpUtil.ResponseCallback responseCallback) {
         Log.i(TAG, "register: ");
         String UID = mViewHolder.UID_ET.getText().toString().trim();
         String nickname = mViewHolder.nickname_ET.getText().toString().trim();
@@ -56,12 +49,12 @@ public class UserServiceImpl implements UserService {
         } catch (ParameterErrorException e) {
             messagePO.setType(MessagePO.NULL);
             messagePO.setContent(e.getMessage());
-            responseCallback.onErrorParam(messagePO);
+            responseCallback.onIllegalArgumentException(messagePO);
             return;
         } catch (UnsupportedEncodingException e) {
             messagePO.setType(MessagePO.NULL);
             messagePO.setContent("不支持的编码类型");
-            responseCallback.onErrorParam(messagePO);
+            responseCallback.onIllegalArgumentException(messagePO);
             return;
         }
 
@@ -72,14 +65,14 @@ public class UserServiceImpl implements UserService {
         userPO.setPassword(PWD);
         StringBuffer stringBuffer = new StringBuffer(0);
         stringBuffer.append(URLConstant.REGISTER_URL);
-        ichatOkHttpClient.doPost(stringBuffer.toString(),
+        OKHttpUtil.getInstance().doPost(stringBuffer.toString(),
                 "ichat_register",
                 JSONObject.toJSONString(userPO, true),
                 responseCallback);
     }
 
     @Override
-    public void login(LoginActivityViewHolder mViewHolder, HttpResponseCallback responseCallback) {
+    public void login(LoginActivityViewHolder mViewHolder, OKHttpUtil.ResponseCallback responseCallback) {
         Log.i(TAG, "login: ");
         String UID = mViewHolder.UID_ET.getText().toString().trim();
         String password = mViewHolder.PWD_ET.getText().toString().trim();
@@ -94,7 +87,7 @@ public class UserServiceImpl implements UserService {
             MessagePO messagePO = new MessagePO();
             messagePO.setType(MessagePO.NULL);
             messagePO.setContent(e.getMessage());
-            responseCallback.onErrorParam(messagePO);
+            responseCallback.onIllegalArgumentException(messagePO);
             return;
         }
 
@@ -105,11 +98,11 @@ public class UserServiceImpl implements UserService {
         stringBuffer.append("&");
         stringBuffer.append("password=");
         stringBuffer.append(password);
-        ichatOkHttpClient.doGet(stringBuffer.toString(), responseCallback);
+        OKHttpUtil.getInstance().doGet(stringBuffer.toString(), responseCallback);
     }
 
     @Override
-    public void findUser(String UID, HttpResponseCallback responseCallback) {
+    public void findUser(String UID, OKHttpUtil.ResponseCallback responseCallback) {
         Log.i(TAG, "findUser: ");
         try {
             if (UID.trim().isEmpty()) {
@@ -119,18 +112,18 @@ public class UserServiceImpl implements UserService {
             MessagePO messagePO = new MessagePO();
             messagePO.setType(MessagePO.NULL);
             messagePO.setContent(e.getMessage());
-            responseCallback.onErrorParam(messagePO);
+            responseCallback.onIllegalArgumentException(messagePO);
             return;
         }
         StringBuffer stringBuffer = new StringBuffer(0);
         stringBuffer.append(URLConstant.LOAD_USER_INFO_URL);
         stringBuffer.append("UID=");
         stringBuffer.append(UID);
-        ichatOkHttpClient.doGet(stringBuffer.toString(), responseCallback);
+        OKHttpUtil.getInstance().doGet(stringBuffer.toString(), responseCallback);
     }
 
     @Override
-    public void logout(String UID, HttpResponseCallback responseCallback) {
+    public void logout(String UID, OKHttpUtil.ResponseCallback responseCallback) {
         Log.i(TAG, "logout: ");
         try {
             if (UID.trim().isEmpty()) {
@@ -140,18 +133,18 @@ public class UserServiceImpl implements UserService {
             MessagePO messagePO = new MessagePO();
             messagePO.setType(MessagePO.NULL);
             messagePO.setContent(e.getMessage());
-            responseCallback.onErrorParam(messagePO);
+            responseCallback.onIllegalArgumentException(messagePO);
             return;
         }
         StringBuffer stringBuffer = new StringBuffer(0);
         stringBuffer.append(URLConstant.LOGINOUT_URL);
         stringBuffer.append("UID=");
         stringBuffer.append(UID);
-        ichatOkHttpClient.doGet(stringBuffer.toString(), responseCallback);
+        OKHttpUtil.getInstance().doGet(stringBuffer.toString(), responseCallback);
     }
 
     @Override
-    public void addFriend(String UID, String FID, HttpResponseCallback responseCallback) {
+    public void addFriend(String UID, String FID, OKHttpUtil.ResponseCallback responseCallback) {
         Log.i(TAG, "addFriend: ");
         try {
             if (UID.trim().isEmpty()) {
@@ -164,7 +157,7 @@ public class UserServiceImpl implements UserService {
             MessagePO messagePO = new MessagePO();
             messagePO.setType(MessagePO.NULL);
             messagePO.setContent(e.getMessage());
-            responseCallback.onErrorParam(messagePO);
+            responseCallback.onIllegalArgumentException(messagePO);
             return;
         }
         StringBuffer stringBuffer = new StringBuffer(0);
@@ -174,11 +167,11 @@ public class UserServiceImpl implements UserService {
         stringBuffer.append("&");
         stringBuffer.append("FID=");
         stringBuffer.append(FID);
-        ichatOkHttpClient.doGet(stringBuffer.toString(), responseCallback);
+        OKHttpUtil.getInstance().doGet(stringBuffer.toString(), responseCallback);
     }
 
     @Override
-    public void delFriend(String UID, String FID, HttpResponseCallback responseCallback) {
+    public void delFriend(String UID, String FID, OKHttpUtil.ResponseCallback responseCallback) {
         Log.i(TAG, "delFriend: ");
         try {
             if (UID.trim().isEmpty()) {
@@ -191,7 +184,7 @@ public class UserServiceImpl implements UserService {
             MessagePO messagePO = new MessagePO();
             messagePO.setType(MessagePO.NULL);
             messagePO.setContent(e.getMessage());
-            responseCallback.onErrorParam(messagePO);
+            responseCallback.onIllegalArgumentException(messagePO);
             return;
         }
         StringBuffer stringBuffer = new StringBuffer(0);
@@ -201,11 +194,11 @@ public class UserServiceImpl implements UserService {
         stringBuffer.append("&");
         stringBuffer.append("FID=");
         stringBuffer.append(FID);
-        ichatOkHttpClient.doGet(stringBuffer.toString(), responseCallback);
+        OKHttpUtil.getInstance().doGet(stringBuffer.toString(), responseCallback);
     }
 
     @Override
-    public void loadFriends(String UID, HttpResponseCallback responseCallback) {
+    public void loadFriends(String UID, OKHttpUtil.ResponseCallback responseCallback) {
         Log.i(TAG, "loadFriends: ");
         try {
             if (UID.trim().isEmpty()) {
@@ -215,33 +208,33 @@ public class UserServiceImpl implements UserService {
             MessagePO messagePO = new MessagePO();
             messagePO.setType(MessagePO.NULL);
             messagePO.setContent(e.getMessage());
-            responseCallback.onErrorParam(messagePO);
+            responseCallback.onIllegalArgumentException(messagePO);
             return;
         }
         StringBuffer stringBuffer = new StringBuffer(0);
         stringBuffer.append(URLConstant.LOAD_USER_FRIENGS_URL);
         stringBuffer.append("UID=");
         stringBuffer.append(UID);
-        ichatOkHttpClient.doGet(stringBuffer.toString(), responseCallback);
+        OKHttpUtil.getInstance().doGet(stringBuffer.toString(), responseCallback);
     }
 
     @Override
-    public void updateUserInfo(UserPO userPO, HttpResponseCallback responseCallback) {
+    public void updateUserInfo(UserPO userPO, OKHttpUtil.ResponseCallback responseCallback) {
         Log.i(TAG, "updateUserInfo: ");
         StringBuffer stringBuffer = new StringBuffer(0);
         stringBuffer.append(URLConstant.MODIFY_USER_INFO_URL);
-        ichatOkHttpClient.doPost(stringBuffer.toString(),
+        OKHttpUtil.getInstance().doPost(stringBuffer.toString(),
                 "ichat_updateUserInfo",
                 JSONObject.toJSONString(userPO, true),
                 responseCallback);
     }
 
     @Override
-    public void changePassword(ChangePasswordPO changePasswordPO, HttpResponseCallback responseCallback) {
+    public void changePassword(ChangePasswordPO changePasswordPO, OKHttpUtil.ResponseCallback responseCallback) {
         Log.i(TAG, "changePassword: " + changePasswordPO);
         StringBuffer stringBuffer = new StringBuffer(0);
         stringBuffer.append(URLConstant.CHANGE_PASSWORD_URL);
-        ichatOkHttpClient.doPost(stringBuffer.toString(),
+        OKHttpUtil.getInstance().doPost(stringBuffer.toString(),
                 "ichat_changePassword",
                 JSONObject.toJSONString(changePasswordPO, true),
                 responseCallback);

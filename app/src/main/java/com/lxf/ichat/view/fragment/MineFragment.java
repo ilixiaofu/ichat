@@ -14,13 +14,13 @@ import android.widget.AdapterView;
 import com.alibaba.fastjson.JSONObject;
 import com.lxf.ichat.R;
 import com.lxf.ichat.base.BaseExecutorService;
-import com.lxf.ichat.httpclient.HttpResponseCallback;
 import com.lxf.ichat.po.MessagePO;
 import com.lxf.ichat.po.MineFragmentFunPO;
 import com.lxf.ichat.po.MsgPO;
 import com.lxf.ichat.po.UserPO;
 import com.lxf.ichat.service.UserService;
 import com.lxf.ichat.service.UserServiceImpl;
+import com.lxf.ichat.util.OKHttpUtil;
 import com.lxf.ichat.view.CustomView.MessageBox;
 import com.lxf.ichat.view.activity.UserProfileActivity;
 import com.lxf.ichat.view.activity.UserSettingActivity;
@@ -125,15 +125,13 @@ public class MineFragment extends Fragment implements AdapterView.OnItemClickLis
         if (resultCode == 200) {
             // 如果有做修改操作重新加载用户信息
             UserPO userPO = BaseExecutorService.getExecutorServiceInstance().getUserPO();
-            mUserService.findUser(userPO.getUID(), new UserHttpResponseCallback());
+            mUserService.findUser(userPO.getUID(), new UserResponseCallback());
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
 
-    private class UserHttpResponseCallback implements HttpResponseCallback {
-        private final String TAG = UserHttpResponseCallback.class.getName();
-
+    private class UserResponseCallback implements OKHttpUtil.ResponseCallback {
         @Override
         public void onFailure(IOException e) {
             MessageBox.showMessage(MineFragment.this.getContext(), "onFailure: " + e.getMessage());
@@ -156,7 +154,7 @@ public class MineFragment extends Fragment implements AdapterView.OnItemClickLis
         }
 
         @Override
-        public void onErrorParam(MessagePO messagePO) {
+        public void onIllegalArgumentException(MessagePO messagePO) {
             MessageBox.showMessage(MineFragment.this.getContext(), messagePO.getContent());
         }
     }

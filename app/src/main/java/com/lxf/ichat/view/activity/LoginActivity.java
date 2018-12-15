@@ -10,11 +10,11 @@ import android.view.View;
 import com.alibaba.fastjson.JSONObject;
 import com.lxf.ichat.R;
 import com.lxf.ichat.base.BaseExecutorService;
-import com.lxf.ichat.httpclient.HttpResponseCallback;
 import com.lxf.ichat.po.MessagePO;
 import com.lxf.ichat.po.UserPO;
 import com.lxf.ichat.service.UserService;
 import com.lxf.ichat.service.UserServiceImpl;
+import com.lxf.ichat.util.OKHttpUtil;
 import com.lxf.ichat.view.CustomView.MessageBox;
 import com.lxf.ichat.view.CustomView.ProgressDialogBox;
 import com.lxf.ichat.view.viewholder.LoginActivityViewHolder;
@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void run() {
                         if (mProgressDialog.isShowing()) {
-                            userService.login(mViewHolder, new LoginHttpResponseCallback());
+                            userService.login(mViewHolder, new LoginResponseCallback());
                         }
                     }
                 }, 3 * 1000);
@@ -113,7 +113,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // 登录
                 mProgressDialog.setMessage("登录中...");
                 mProgressDialog.show();
-                userService.login(mViewHolder, new LoginHttpResponseCallback());
+                userService.login(mViewHolder, new LoginResponseCallback());
                 break;
             case R.id.login_CB_keep_pwd:
                 if (!mViewHolder.keepPwd_CB.isChecked()) {
@@ -168,13 +168,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private class LoginHttpResponseCallback implements HttpResponseCallback {
-
-        private final String TAG = LoginHttpResponseCallback.class.getName();
+    private class LoginResponseCallback implements OKHttpUtil.ResponseCallback {
 
         @Override
         public void onFailure(IOException e) {
-            Log.i(TAG, "onFailure: " + e.getMessage());
             mProgressDialog.cancel();
             MessageBox.showMessage(LoginActivity.this, "onFailure: " + e.getMessage());
         }
@@ -202,21 +199,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     editor.apply();
                 }
                 String UID = mViewHolder.UID_ET.getText().toString();
-                userService.findUser(UID, new UserHttpResponseCallback());
+                userService.findUser(UID, new UserResponseCallback());
             }
         }
 
         @Override
-        public void onErrorParam(MessagePO messagePO) {
+        public void onIllegalArgumentException(MessagePO messagePO) {
             mProgressDialog.cancel();
             MessageBox.showMessage(LoginActivity.this, messagePO.getContent());
         }
     }
 
-    private class UserHttpResponseCallback implements HttpResponseCallback {
-
-        private final String TAG = UserHttpResponseCallback.class.getName();
-
+    private class UserResponseCallback implements OKHttpUtil.ResponseCallback {
         @Override
         public void onFailure(IOException e) {
             mProgressDialog.cancel();
@@ -240,11 +234,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 LoginActivity.this.startActivity( intent );
                 LoginActivity.this.finish();
             }
-
         }
 
         @Override
-        public void onErrorParam(MessagePO messagePO) {
+        public void onIllegalArgumentException(MessagePO messagePO) {
             mProgressDialog.cancel();
             MessageBox.showMessage(LoginActivity.this, messagePO.getContent());
         }

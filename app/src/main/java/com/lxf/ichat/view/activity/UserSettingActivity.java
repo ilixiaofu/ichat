@@ -10,13 +10,13 @@ import android.widget.AdapterView;
 import com.alibaba.fastjson.JSONObject;
 import com.lxf.ichat.R;
 import com.lxf.ichat.base.BaseExecutorService;
-import com.lxf.ichat.httpclient.HttpResponseCallback;
 import com.lxf.ichat.po.ChangePasswordPO;
 import com.lxf.ichat.po.MessagePO;
 import com.lxf.ichat.po.UserPO;
 import com.lxf.ichat.po.UserSettingPO;
 import com.lxf.ichat.service.UserService;
 import com.lxf.ichat.service.UserServiceImpl;
+import com.lxf.ichat.util.OKHttpUtil;
 import com.lxf.ichat.view.CustomView.ChangePasswordAlertDialog;
 import com.lxf.ichat.view.CustomView.CommonAlertDialog;
 import com.lxf.ichat.view.CustomView.MessageBox;
@@ -117,7 +117,7 @@ public class UserSettingActivity extends AppCompatActivity implements View.OnCli
                 changePasswordPO.setOldPassword(mChangePasswordAlertDialog.mViewHolder.oldPWD_et.getText().toString());
                 changePasswordPO.setNewPassword(mChangePasswordAlertDialog.mViewHolder.newPWD_et.getText().toString());
                 changePasswordPO.setConfirmPassword(mChangePasswordAlertDialog.mViewHolder.CFPWD_et.getText().toString());
-                mUserService.changePassword(changePasswordPO, new ChangePwdHttpResponseCallback());
+                mUserService.changePassword(changePasswordPO, new ChangePwdResponseCallback());
                 break;
             }
             case R.id.alert_dialog_change_password_BTN_cancel:
@@ -145,9 +145,7 @@ public class UserSettingActivity extends AppCompatActivity implements View.OnCli
     }
 
     // 修改密码
-    private class ChangePwdHttpResponseCallback implements HttpResponseCallback {
-        private final String TAG = ChangePwdHttpResponseCallback.class.getName();
-
+    private class ChangePwdResponseCallback implements OKHttpUtil.ResponseCallback {
         @Override
         public void onFailure(IOException e) {
             mProgressDialog.cancel();
@@ -168,7 +166,7 @@ public class UserSettingActivity extends AppCompatActivity implements View.OnCli
         }
 
         @Override
-        public void onErrorParam(MessagePO messagePO) {
+        public void onIllegalArgumentException(MessagePO messagePO) {
             mProgressDialog.cancel();
             MessageBox.showMessage(UserSettingActivity.this, messagePO.getContent());
         }

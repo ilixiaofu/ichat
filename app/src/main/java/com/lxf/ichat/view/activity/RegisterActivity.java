@@ -8,10 +8,10 @@ import android.view.View;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lxf.ichat.R;
-import com.lxf.ichat.httpclient.HttpResponseCallback;
 import com.lxf.ichat.po.MessagePO;
 import com.lxf.ichat.service.UserService;
 import com.lxf.ichat.service.UserServiceImpl;
+import com.lxf.ichat.util.OKHttpUtil;
 import com.lxf.ichat.view.CustomView.MessageBox;
 import com.lxf.ichat.view.CustomView.ProgressDialogBox;
 import com.lxf.ichat.view.viewholder.RegisterActivityViewHolder;
@@ -52,13 +52,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 mProgressDialog = new ProgressDialogBox(this);
                 mProgressDialog.setMessage("注册中...请稍等");
                 mProgressDialog.show();
-                mUserService.register(mViewHolder, new RegisterHttpResponseCallback());
+                mUserService.register(mViewHolder, new RegisterResponseCallback());
                 break;
         }
     }
 
-    private class RegisterHttpResponseCallback implements HttpResponseCallback {
-        private final String TAG = RegisterHttpResponseCallback.class.getName();
+    private class RegisterResponseCallback implements OKHttpUtil.ResponseCallback {
+        private final String TAG = RegisterResponseCallback.class.getName();
 
         @Override
         public void onFailure(IOException e) {
@@ -68,7 +68,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         @Override
         public void onResponse(String data) {
-            Log.i(TAG, "onResponse: ");
             mProgressDialog.cancel();
             JSONObject json = JSONObject.parseObject( data );
             String code = json.getString("code");
@@ -84,8 +83,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
 
         @Override
-        public void onErrorParam(MessagePO messagePO) {
-            Log.i(TAG, "onErrorParam: ");
+        public void onIllegalArgumentException(MessagePO messagePO) {
             mProgressDialog.cancel();
             MessageBox.showMessage(RegisterActivity.this, messagePO.getContent());
         }

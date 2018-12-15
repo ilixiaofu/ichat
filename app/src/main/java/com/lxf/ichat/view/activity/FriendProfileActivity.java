@@ -12,16 +12,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.lxf.ichat.R;
 import com.lxf.ichat.base.BaseExecutorService;
 import com.lxf.ichat.constant.BundleConstant;
-import com.lxf.ichat.httpclient.HttpResponseCallback;
 import com.lxf.ichat.po.MessagePO;
 import com.lxf.ichat.po.UserPO;
 import com.lxf.ichat.service.UserService;
 import com.lxf.ichat.service.UserServiceImpl;
-import com.lxf.ichat.view.CustomView.MessageBox;
+import com.lxf.ichat.util.OKHttpUtil;
 import com.lxf.ichat.util.UserPOTransferListUtil;
-import com.lxf.ichat.view.adapter.UserProfileAdapter;
 import com.lxf.ichat.view.CustomView.CommonAlertDialog;
+import com.lxf.ichat.view.CustomView.MessageBox;
 import com.lxf.ichat.view.CustomView.ProgressDialogBox;
+import com.lxf.ichat.view.adapter.UserProfileAdapter;
 import com.lxf.ichat.view.viewholder.FriendProfileActivityViewHolder;
 
 import java.io.IOException;
@@ -150,13 +150,13 @@ public class FriendProfileActivity extends AppCompatActivity implements View.OnC
             Bundle bundle = getIntent().getExtras();
             UserPO userPO = BaseExecutorService.getExecutorServiceInstance().getUserPO();
             UserPO friend = (UserPO) bundle.getSerializable(BundleConstant.FRIEND_KEY);
-            mUserService.delFriend(userPO.getUID(), friend.getUID(), new DeleteFriendHttpResponseCallback());
+            mUserService.delFriend(userPO.getUID(), friend.getUID(), new DeleteFriendResponseCallback());
         }
     }
 
-    private class DeleteFriendHttpResponseCallback implements HttpResponseCallback {
+    private class DeleteFriendResponseCallback implements OKHttpUtil.ResponseCallback {
 
-        private final String TAG = DeleteFriendHttpResponseCallback.class.getName();
+        private final String TAG = DeleteFriendResponseCallback.class.getName();
 
         @Override
         public void onFailure(IOException e) {
@@ -165,9 +165,9 @@ public class FriendProfileActivity extends AppCompatActivity implements View.OnC
         }
 
         @Override
-        public void onResponse(String message) {
+        public void onResponse(String data) {
             mProgressDialog.cancel();
-            JSONObject json = JSONObject.parseObject( message );
+            JSONObject json = JSONObject.parseObject( data );
             String code = json.getString( "code" );
             String msg = json.getString( "msg" );
             if (!code.equals("200")) {
@@ -180,7 +180,7 @@ public class FriendProfileActivity extends AppCompatActivity implements View.OnC
         }
 
         @Override
-        public void onErrorParam(MessagePO messagePO) {
+        public void onIllegalArgumentException(MessagePO messagePO) {
             mProgressDialog.cancel();
             MessageBox.showMessage(FriendProfileActivity.this, messagePO.getContent());
         }

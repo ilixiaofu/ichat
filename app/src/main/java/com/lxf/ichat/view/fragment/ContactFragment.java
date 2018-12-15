@@ -19,17 +19,17 @@ import com.lxf.ichat.R;
 import com.lxf.ichat.base.BaseExecutorService;
 import com.lxf.ichat.base.BaseObservable;
 import com.lxf.ichat.constant.BundleConstant;
-import com.lxf.ichat.httpclient.HttpResponseCallback;
 import com.lxf.ichat.po.MessagePO;
 import com.lxf.ichat.po.UserPO;
 import com.lxf.ichat.service.UserService;
 import com.lxf.ichat.service.UserServiceImpl;
-import com.lxf.ichat.view.activity.FriendProfileActivity;
-import com.lxf.ichat.view.activity.SearchUserActivity;
-import com.lxf.ichat.view.adapter.ContactFragmentAdapter;
+import com.lxf.ichat.util.OKHttpUtil;
 import com.lxf.ichat.view.CustomView.CommonAlertDialog;
 import com.lxf.ichat.view.CustomView.MessageBox;
 import com.lxf.ichat.view.CustomView.ProgressDialogBox;
+import com.lxf.ichat.view.activity.FriendProfileActivity;
+import com.lxf.ichat.view.activity.SearchUserActivity;
+import com.lxf.ichat.view.adapter.ContactFragmentAdapter;
 import com.lxf.ichat.view.viewholder.ContactFragmentViewHolder;
 import com.lxf.ichat.websocket.WebSocketMsg;
 
@@ -101,7 +101,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener, A
         mProgressDialog.setMessage("加载好友列表中...");
         mProgressDialog.show();
         mUserService = new UserServiceImpl();
-        mUserService.loadFriends(userPO.getUID(), new FriendListHttpResponseCallback());
+        mUserService.loadFriends(userPO.getUID(), new FriendListResponseCallback());
 
         BaseObservable.getObservable().addObserver(this);
     }
@@ -165,7 +165,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener, A
                 mAlertDialog.dismiss();
                 UserPO userPO = BaseExecutorService.getExecutorServiceInstance().getUserPO();
                 UserPO friend = mList.get(index);
-                mUserService.delFriend(userPO.getUID(), friend.getUID(), new DeleteFriendHttpResponseCallback());
+                mUserService.delFriend(userPO.getUID(), friend.getUID(), new DeleteFriendResponseCallback());
                 break;
             case R.id.alert_dialog_common_BTN_cancel:
                 mAlertDialog.dismiss();
@@ -182,7 +182,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener, A
                 mProgressDialog.setMessage("刷新好友列表中...");
                 mProgressDialog.show();
                 UserPO userPO = BaseExecutorService.getExecutorServiceInstance().getUserPO();
-                mUserService.loadFriends(userPO.getUID(), new FriendListHttpResponseCallback());
+                mUserService.loadFriends(userPO.getUID(), new FriendListResponseCallback());
             }
         }
     }
@@ -247,7 +247,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener, A
                     // 好友上线刷新好友列表
                     if (listPO.getUID().equals(UID)) {
                         UserPO userPO = BaseExecutorService.getExecutorServiceInstance().getUserPO();
-                        mUserService.loadFriends(userPO.getUID(), new FriendListHttpResponseCallback());
+                        mUserService.loadFriends(userPO.getUID(), new FriendListResponseCallback());
                         break;
                     }
                 }
@@ -256,9 +256,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener, A
     }
 
 
-    private class FriendListHttpResponseCallback implements HttpResponseCallback {
-        private final String TAG = FriendListHttpResponseCallback.class.getName();
-
+    private class FriendListResponseCallback implements OKHttpUtil.ResponseCallback {
         @Override
         public void onFailure(IOException e) {
             mProgressDialog.cancel();
@@ -266,9 +264,9 @@ public class ContactFragment extends Fragment implements View.OnClickListener, A
         }
 
         @Override
-        public void onResponse(String result) {
+        public void onResponse(String data) {
             mProgressDialog.cancel();
-            JSONObject json = JSONObject.parseObject(result);
+            JSONObject json = JSONObject.parseObject(data);
             String code = json.getString("code");
             String msg = json.getString("msg");
             if (!code.equals("200")) {
@@ -283,17 +281,14 @@ public class ContactFragment extends Fragment implements View.OnClickListener, A
         }
 
         @Override
-        public void onErrorParam(MessagePO messagePO) {
+        public void onIllegalArgumentException(MessagePO messagePO) {
             mProgressDialog.cancel();
             MessageBox.showMessage(ContactFragment.this.getContext(), messagePO.getContent());
         }
     }
 
 
-    private class DeleteFriendHttpResponseCallback implements HttpResponseCallback {
-
-        private final String TAG = DeleteFriendHttpResponseCallback.class.getName();
-
+    private class DeleteFriendResponseCallback implements OKHttpUtil.ResponseCallback {
         @Override
         public void onFailure(IOException e) {
             mProgressDialog.cancel();
@@ -301,9 +296,9 @@ public class ContactFragment extends Fragment implements View.OnClickListener, A
         }
 
         @Override
-        public void onResponse(String result) {
+        public void onResponse(String data) {
             mProgressDialog.cancel();
-            JSONObject json = JSONObject.parseObject(result);
+            JSONObject json = JSONObject.parseObject(data);
             String code = json.getString("code");
             String msg = json.getString("msg");
             if (!code.equals("200")) {
@@ -312,12 +307,13 @@ public class ContactFragment extends Fragment implements View.OnClickListener, A
                 mProgressDialog.setMessage("刷新好友列表中...");
                 mProgressDialog.show();
                 UserPO userPO = BaseExecutorService.getExecutorServiceInstance().getUserPO();
-                mUserService.loadFriends(userPO.getUID(), new FriendListHttpResponseCallback());
+                mUserService.loadFriends(userPO.getUID(), new FriendListResponseCallback());
             }
         }
 
+
         @Override
-        public void onErrorParam(MessagePO messagePO) {
+        public void onIllegalArgumentException(MessagePO messagePO) {
             mProgressDialog.cancel();
             MessageBox.showMessage(ContactFragment.this.getContext(), messagePO.getContent());
         }

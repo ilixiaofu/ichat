@@ -14,12 +14,12 @@ import android.view.View;
 
 import com.lxf.ichat.R;
 import com.lxf.ichat.base.BaseExecutorService;
-import com.lxf.ichat.httpclient.HttpResponseCallback;
 import com.lxf.ichat.po.MessagePO;
 import com.lxf.ichat.po.UserPO;
 import com.lxf.ichat.service.MyService;
 import com.lxf.ichat.service.UserService;
 import com.lxf.ichat.service.UserServiceImpl;
+import com.lxf.ichat.util.OKHttpUtil;
 import com.lxf.ichat.view.fragment.ContactFragment;
 import com.lxf.ichat.view.fragment.MineFragment;
 import com.lxf.ichat.view.fragment.MsgFragment;
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         UserService userService = new UserServiceImpl();
         UserPO userPO = BaseExecutorService.getExecutorServiceInstance().getUserPO();
-        userService.logout(userPO.getUID(), new LogoutHttpResponseCallback());
+        userService.logout(userPO.getUID(), new LogoutResponseCallback());
         super.onDestroy();
     }
 
@@ -134,22 +134,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // 退出登录
-    private class LogoutHttpResponseCallback implements HttpResponseCallback {
-        private final String TAG = LogoutHttpResponseCallback.class.getName();
-
+    private class LogoutResponseCallback implements OKHttpUtil.ResponseCallback {
         @Override
         public void onFailure(IOException e) {
-            Log.i(TAG, "onErrorParam: " + e.toString());
+
         }
 
         @Override
-        public void onResponse(String result) {
-            Log.i(TAG, "onResponse: " + result);
+        public void onResponse(String data) {
+
         }
 
         @Override
-        public void onErrorParam(MessagePO messagePO) {
-            Log.i(TAG, "onErrorParam: " + messagePO.getContent());
+        public void onIllegalArgumentException(MessagePO messagePO) {
+
         }
     }
 }

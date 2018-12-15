@@ -8,15 +8,15 @@ import android.view.View;
 import com.alibaba.fastjson.JSONObject;
 import com.lxf.ichat.R;
 import com.lxf.ichat.base.BaseExecutorService;
-import com.lxf.ichat.httpclient.HttpResponseCallback;
 import com.lxf.ichat.po.MessagePO;
 import com.lxf.ichat.po.UserPO;
 import com.lxf.ichat.service.UserService;
 import com.lxf.ichat.service.UserServiceImpl;
-import com.lxf.ichat.view.CustomView.MessageBox;
+import com.lxf.ichat.util.OKHttpUtil;
 import com.lxf.ichat.util.UserPOTransferListUtil;
-import com.lxf.ichat.view.adapter.UserProfileAdapter;
+import com.lxf.ichat.view.CustomView.MessageBox;
 import com.lxf.ichat.view.CustomView.ProgressDialogBox;
+import com.lxf.ichat.view.adapter.UserProfileAdapter;
 import com.lxf.ichat.view.viewholder.SearchUserActivityViewHolder;
 
 import java.io.IOException;
@@ -67,7 +67,7 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
                 mProgressDialog.setMessage("查找中...");
                 mProgressDialog.show();
                 String FID = mViewHolder.UID_ET.getText().toString().trim();
-                mUserService.findUser(FID, new SearchUserHttpResponseCallback());
+                mUserService.findUser(FID, new SearchUserResponseCallback());
                 break;
             case R.id.search_user_BTN_add:
                 int count = mViewHolder.listView.getAdapter().getCount();
@@ -79,7 +79,7 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
                     Map<String, String> map = (Map<String, String>) mViewHolder.listView.getAdapter().getItem(0);
                     String mFID = map.get("value");
                     UserPO userPO = BaseExecutorService.getExecutorServiceInstance().getUserPO();
-                    mUserService.addFriend(userPO.getUID(), mFID, new AddFriendHttpResponseCallback());
+                    mUserService.addFriend(userPO.getUID(), mFID, new AddFriendResponseCallback());
                 }
                 break;
             case R.id.search_user_BTN_back:
@@ -88,9 +88,7 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private class SearchUserHttpResponseCallback implements HttpResponseCallback {
-        private final String TAG = SearchUserHttpResponseCallback.class.getName();
-
+    private class SearchUserResponseCallback implements OKHttpUtil.ResponseCallback {
         @Override
         public void onFailure(IOException e) {
             mProgressDialog.cancel();
@@ -126,15 +124,13 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
         }
 
         @Override
-        public void onErrorParam(MessagePO messagePO) {
+        public void onIllegalArgumentException(MessagePO messagePO) {
             mProgressDialog.cancel();
             MessageBox.showMessage(SearchUserActivity.this, messagePO.getContent());
         }
     }
 
-    private class AddFriendHttpResponseCallback implements HttpResponseCallback {
-        private final String TAG = AddFriendHttpResponseCallback.class.getName();
-
+    private class AddFriendResponseCallback implements OKHttpUtil.ResponseCallback {
         @Override
         public void onFailure(IOException e) {
             mProgressDialog.cancel();
@@ -142,9 +138,9 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
         }
 
         @Override
-        public void onResponse(String message) {
+        public void onResponse(String data) {
             mProgressDialog.cancel();
-            JSONObject json = JSONObject.parseObject(message);
+            JSONObject json = JSONObject.parseObject(data);
             String code = json.getString("code");
             String msg = json.getString("msg");
             MessageBox.showMessage(SearchUserActivity.this, msg);
@@ -155,7 +151,7 @@ public class SearchUserActivity extends AppCompatActivity implements View.OnClic
         }
 
         @Override
-        public void onErrorParam(MessagePO messagePO) {
+        public void onIllegalArgumentException(MessagePO messagePO) {
             mProgressDialog.cancel();
             MessageBox.showMessage(SearchUserActivity.this, messagePO.getContent());
         }

@@ -13,17 +13,17 @@ import com.codbking.widget.OnSureLisener;
 import com.codbking.widget.bean.DateType;
 import com.lxf.ichat.R;
 import com.lxf.ichat.base.BaseExecutorService;
-import com.lxf.ichat.httpclient.HttpResponseCallback;
 import com.lxf.ichat.po.MessagePO;
 import com.lxf.ichat.po.UserPO;
 import com.lxf.ichat.service.UserService;
 import com.lxf.ichat.service.UserServiceImpl;
-import com.lxf.ichat.view.CustomView.MessageBox;
+import com.lxf.ichat.util.OKHttpUtil;
 import com.lxf.ichat.util.UserPOTransferListUtil;
-import com.lxf.ichat.view.adapter.UserProfileAdapter;
+import com.lxf.ichat.view.CustomView.MessageBox;
 import com.lxf.ichat.view.CustomView.ProgressDialogBox;
 import com.lxf.ichat.view.CustomView.SelectSexAlertDialog;
 import com.lxf.ichat.view.CustomView.UpdateUserAlertDialog;
+import com.lxf.ichat.view.adapter.UserProfileAdapter;
 import com.lxf.ichat.view.viewholder.UserProfileActivityViewHolder;
 
 import java.io.IOException;
@@ -98,14 +98,14 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                     if ( !("男".equals(temp.getSex())) ) {
                         temp.setSex("男");
                         mProgressDialog.show();
-                        mUserService.updateUserInfo(temp, new UpdateInfoHttpResponseCallback());
+                        mUserService.updateUserInfo(temp, new UpdateInfoResponseCallback());
                     }
                 }
                 if (mSelectSexAlertDialog.mViewHolder.female_rb.isChecked()) {
                     if ( !("女".equals(temp.getSex())) ) {
                         temp.setSex("女");
                         mProgressDialog.show();
-                        mUserService.updateUserInfo(temp, new UpdateInfoHttpResponseCallback());
+                        mUserService.updateUserInfo(temp, new UpdateInfoResponseCallback());
                     }
                 }
                 break;
@@ -137,7 +137,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                     temp.setEmail(mUpdateUserAlertDialog.mViewHolder.content_et.getText().toString());
                 }
                 mProgressDialog.show();
-                mUserService.updateUserInfo(temp, new UpdateInfoHttpResponseCallback());
+                mUserService.updateUserInfo(temp, new UpdateInfoResponseCallback());
                 break;
             }
         }
@@ -205,7 +205,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                         } else {
                             temp.setBirthday(date.getTime());
                             mProgressDialog.show();
-                            mUserService.updateUserInfo(temp, new UpdateInfoHttpResponseCallback());
+                            mUserService.updateUserInfo(temp, new UpdateInfoResponseCallback());
                         }
                     }
                 });
@@ -237,9 +237,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-    private class UserHttpResponseCallback implements HttpResponseCallback {
-        private final String TAG = UserHttpResponseCallback.class.getName();
-
+    private class UserResponseCallback implements OKHttpUtil.ResponseCallback {
         @Override
         public void onFailure(IOException e) {
             MessageBox.showMessage(UserProfileActivity.this, "onFailure: " + e.getMessage());
@@ -270,15 +268,13 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         }
 
         @Override
-        public void onErrorParam(MessagePO messagePO) {
+        public void onIllegalArgumentException(MessagePO messagePO) {
             MessageBox.showMessage(UserProfileActivity.this, messagePO.getContent());
         }
     }
 
     // 修改资料请求
-    private class UpdateInfoHttpResponseCallback implements HttpResponseCallback {
-        private final String TAG = UpdateInfoHttpResponseCallback.class.getName();
-
+    private class UpdateInfoResponseCallback implements OKHttpUtil.ResponseCallback {
         @Override
         public void onFailure(IOException e) {
             mProgressDialog.cancel();
@@ -295,12 +291,12 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             if (code.equals("200")) {
                 setResult(200);
                 UserPO userPO = BaseExecutorService.getExecutorServiceInstance().getUserPO();
-                mUserService.findUser(userPO.getUID(), new UserHttpResponseCallback());
+                mUserService.findUser(userPO.getUID(), new UserResponseCallback());
             }
         }
 
         @Override
-        public void onErrorParam(MessagePO messagePO) {
+        public void onIllegalArgumentException(MessagePO messagePO) {
             mProgressDialog.cancel();
             MessageBox.showMessage(UserProfileActivity.this, messagePO.getContent());
         }
